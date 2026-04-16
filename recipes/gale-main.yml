@@ -16,12 +16,9 @@ platforms:
   - linux/amd64
 
 modules:
-
   - type: dnf
     install:
       packages:
         - nano
-    remove:
-      packages:
-
+        
   - type: signing # this sets up the proper policy & signing files for signed images to work fully
