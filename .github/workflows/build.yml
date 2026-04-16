@@ -31,7 +31,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   gale-main:
-    name: Build gale-main
+    name: Build Gale
     permissions:
       contents: read # Needed to pull repo for building
       actions: read # Needed to read actions for provenance generation
