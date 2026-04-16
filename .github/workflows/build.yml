@@ -1,42 +1,45 @@
-name: bluebuild
+# SPDX-FileCopyrightText: Copyright 2026 Anbiona
+#
+# SPDX-License-Identifier: Apache-2.0
+
+name: build-gale
+permissions: {}
 on:
   schedule:
     - cron:
-        "00 06 * * *" # build at 06:00 UTC every day
-        # (20 minutes after last ublue images start building)
+        "00 07 * * *" # build at 07:00 UTC every day
+        # (1 hour after secureblue starts building)
   push:
+    branches-ignore: # don't rebuild for dependabot
+      - 'dependabot/**'
+      - 'create-pull-request/**'
     paths-ignore: # don't rebuild if only documentation has changed
       - "**.md"
 
-  pull_request:
   workflow_dispatch: # allow manually triggering builds
+    inputs:
+      clear-plan:
+        description: 'Clear previous layer plan?'
+        type: boolean
+        required: true
+        default: false
+
+
 concurrency:
   # only run one build at a time
   group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
   cancel-in-progress: true
 jobs:
-  bluebuild:
-    name: Build Custom Image
-    runs-on: ubuntu-latest
+  gale-main:
+    name: Build gale-main
     permissions:
-      contents: read
-      packages: write
-      id-token: write
-    strategy:
-      fail-fast: false # stop GH from cancelling all matrix builds if one fails
-      matrix:
-        recipe:
-          # !! Add your recipes here
-          - recipe.yml
-    steps:
-      # the build is fully handled by the reusable github action
-      - name: Build Custom Image
-        uses: blue-build/github-action@v1.11
-        with:
-          recipe: ${{ matrix.recipe }}
-          cosign_private_key: ${{ secrets.SIGNING_SECRET }}
-          registry_token: ${{ github.token }}
-          pr_event_number: ${{ github.event.number }}
-
-          # enabled by default, disable if your image is small and you want faster builds
-          maximize_build_space: true
+      contents: read # Needed to pull repo for building
+      actions: read # Needed to read actions for provenance generation
+      packages: write # Needed for publishing
+      id-token: write # Needed for signing
+    uses: ./.github/workflows/build-recipe.yml
+    with:
+      recipe: gale-main.yml
+      rechunk: true # much more effecient images, experimental and will be deprecated
+    secrets:
+      SIGNING_SECRET: ${{ secrets.SIGNING_SECRET }}
