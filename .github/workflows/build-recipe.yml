@@ -51,7 +51,7 @@ jobs:
 
       - name: Runner setup
         id: runner_setup
-        uses: ./.github/workflows/shared-runner-setup
+        uses: ./.github/workflows/runner-setup
         with:
           recipe: ${{ inputs.recipe }}
 
