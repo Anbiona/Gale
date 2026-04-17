@@ -1,0 +1,29 @@
+# SPDX-FileCopyrightText: Copyright 2026 Anbiona
+# SPDX-FileCopyrightText: Copyright 2025-2026 The Secureblue Authors
+# SPDX-License-Identifier: Apache-2.0
+
+name: pr-build
+
+permissions: {}
+
+on:
+  pull_request:
+    branches-ignore: # don't rebuild for dependabot
+      - live
+      - staging
+    paths-ignore: # don't rebuild if only documentation has changed
+      - "**.md"
+
+concurrency:
+  # only run one build at a time
+  group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
+  cancel-in-progress: true
+jobs:
+  bluebuild:
+    name: PR Build (gale-main.yml)
+    permissions:
+      contents: read # Needed to pull repo for building
+      packages: read # Needed to read base image manifest
+    uses: ./.github/workflows/pr_build-recipe.yml
+    with:
+      recipe: gale-main.yml
