@@ -80,6 +80,7 @@ jobs:
             # Docker installation
             registry-1.docker.io:443
             auth.docker.io:443
+            production.cloudflare.docker.com
 
             # Negativo packages installation
             negativo17.org:443
