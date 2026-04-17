@@ -62,6 +62,7 @@ jobs:
             github.com:443
 
             # slsa-verifier installation
+            release-assets.githubusercontent.com:443
             tuf-repo-cdn.sigstore.dev:443
             rekor.sigstore.dev:443
 
