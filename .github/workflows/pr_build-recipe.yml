@@ -3,7 +3,9 @@
 # SPDX-License-Identifier: Apache-2.0
 
 name: pr-build-gale
+
 permissions: {}
+
 on:
   workflow_call:
     inputs:
@@ -22,7 +24,6 @@ jobs:
     permissions:
       contents: read # needed to pull repo for building
       packages: write # neded for publishing
-      id-token: write # needed for signing
 
     steps:
       # egress monitoring and filtering
