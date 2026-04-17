@@ -41,5 +41,6 @@ jobs:
     with:
       recipe: gale-main.yml
       rechunk: true # much more effecient images, experimental and will be deprecated
+      clear-plan: ${{ inputs.clear-plan || false }}
     secrets:
       SIGNING_SECRET: ${{ secrets.SIGNING_SECRET }}
