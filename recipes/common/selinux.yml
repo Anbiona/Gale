@@ -1,0 +1,9 @@
+# SPDX-FileCopyrightText: Copyright 2026 Anbiona
+# 
+# SPDX-License-Identifier: Apache-2.0
+
+modules:
+    - type: script
+      source: ghcr.io/blue-build/modules@sha256:7e0b170305b5dfb58c1e2ae8d80d041de73867363b43c9968b55fbf2ae22a156
+      scripts:
+        - selinuxpolicy.sh

@@ -1,0 +1,40 @@
+policy_module (cockpit_machines, 1.0.0)
+
+# SPDX-FileCopyrightText: Copyright 2026 Anbiona
+# 
+# SPDX-License-Identifier: Apache-2.0
+
+require {
+    type unconfined_t;
+    type virt_dbus_t;
+    type pasta_t;
+    type initrc_t;
+    type initrc_tmp_t;
+    type journalctl_exec_t;
+    type virsh_t;
+    type virtqemud_t;
+    type policykit_t;
+    class cap_userns { dac_override dac_read_search };
+    class file { entrypoint open read };
+    class dir search;
+    class dbus send_msg;
+}
+
+# initrc_t
+allow initrc_t virt_dbus_t:dbus send_msg;
+allow virt_dbus_t initrc_t:dbus send_msg;
+
+# virsh_t
+allow virsh_t initrc_tmp_t:file open;
+allow virsh_t policykit_t:dbus send_msg;
+allow policykit_t virsh_t:dbus send_msg;
+
+# virtqemud_t
+allow virtqemud_t initrc_t:dir search;
+allow virtqemud_t initrc_t:file { read open };
+
+# pasta_t
+allow pasta_t self:cap_userns { dac_override dac_read_search };
+
+# unconfined_t
+allow unconfined_t journalctl_exec_t:file entrypoint;
