@@ -20,5 +20,18 @@ modules:
     install:
       packages:
         - nano
-        
+        - tuned
+        - cockpit
+        - cockpit-system
+        - cockpit-files
+        - cockpit-machines
+        - cockpit-networkmanager
+        - cockpit-podman
+        - libvert-daemon-driver-secret
+
+  - type: script
+    source: ghcr.io/blue-build/modules@sha256:7e0b170305b5dfb58c1e2ae8d80d041de73867363b43c9968b55fbf2ae22a156
+    scripts:
+      - selinuxpolicy.sh
+
   - type: signing # this sets up the proper policy & signing files for signed images to work fully
